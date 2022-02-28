@@ -147,6 +147,25 @@ function layerResize(layer) {
 
         document.getElementById("resizeForm").innerHTML = tableStructure;
 
+    } else if (layer = 'block') {
+        let tableStructureArr = []
+        let block_index = 0;
+        for (let objOut of blockLayout) {
+            let tableStructure = '<table id="tblstructure">';
+
+            tableStructure += "<tr><th>X</th><th>Y</th></tr>";
+            let index = 0;
+            for (let obj of objOut['block']) {
+                tableStructure += `<tr><td>X:<input onchange='changeBlockValue(event,${block_index})' type='number' id='x_${index}' value='${obj.x}'/> </td><td>Y:<input onchange='changeBlockValue(event,${block_index})' type='number' id='y_${index}' value='${obj.y}'/> </td></tr>`;
+                index++;
+            }
+
+            tableStructure += '</table>';
+            tableStructureArr.push(tableStructure);
+            block_index++;
+        }
+        console.log(tableStructureArr)
+        document.getElementById("resizeForm").innerHTML = tableStructureArr;
     }
 }
 
@@ -159,6 +178,21 @@ function changeValue($event) {
         outerLayout[index].x = parseInt(value);
     } else {
         outerLayout[index].y = parseInt(value);
+    }
+
+}
+
+
+function changeBlockValue($event, block_index) {
+    let index = $event.target.id.split('_')[1];
+    let value = $event.target.value;
+
+    console.log(block_index, index, value)
+
+    if ($event.target.id.split('_')[0] == 'x') {
+        blockLayout[block_index].block[index].x = parseInt(value);
+    } else {
+        blockLayout[block_index].block[index].y = parseInt(value);
     }
 
 }
